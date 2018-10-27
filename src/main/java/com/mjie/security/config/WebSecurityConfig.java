@@ -1,7 +1,5 @@
 package com.mjie.security.config;
 
-import com.mjie.security.handler.LoginFailureHandler;
-import com.mjie.security.handler.LoginSuccessHandler;
 import com.mjie.security.web.common.service.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,9 +22,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin().loginPage("/login").successHandler(new LoginSuccessHandler()).
-                failureHandler(new LoginFailureHandler()).permitAll().and().
-                authorizeRequests().antMatchers( "/static/**").permitAll().
+        http.formLogin().loginPage("/login").successForwardUrl("/loginSuccess").failureForwardUrl("/loginFailure")
+                .permitAll().and().authorizeRequests().antMatchers( "/static/**").permitAll().
                 anyRequest().authenticated().and().logout().permitAll();
     }
 
